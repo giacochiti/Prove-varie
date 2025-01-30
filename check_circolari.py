@@ -1,3 +1,4 @@
+import os
 import requests
 from bs4 import BeautifulSoup
 
@@ -9,7 +10,7 @@ token = '7305004967:AAGe1tySkfUANi9yp0Jh2uBNAJeWwHUG2SI'  # Il token el bot
 url = 'https://liceoartisticopistoia.edu.it/circolari/'
 
 # Percorso del file per salvare l'ultimo titolo
-file_path = 'last_circular.txt'
+file_path = os.path.join(os.getcwd(), 'last_circular.txt')
 
 # Funzione per inviare un messaggio su Telegram tramite l'API
 def send_telegram_message(message):
@@ -46,8 +47,14 @@ def get_last_saved_circular():
 
 # Funzione per salvare il titolo della circolare nel file
 def save_last_circular(title):
-    with open(file_path, 'w') as file:
-        file.write(title)
+    try:
+        with open(file_path, 'w') as file:
+            file.write(title)
+            file.flush()
+            os.fsync(file.fileno())
+        print(f"Contenuto del file scritto: {title}")
+    except Exception as e:
+        print(f"Errore durante l'aggiornamento del file: {e}")
 
 # Main
 if __name__ == "__main__":
