@@ -1,9 +1,10 @@
 name: Controllo Circolari
 
 on:
-  schedule:  togliere i cancelletti a inizio riga per
-   - cron: '*/1 * * * *'  # Esegui ogni minuto
-   workflow_dispatch:  # Consente di avviare manualmente
+  schedule:
+    - cron: '*/1 * * * *'  # Esegui ogni minuto
+  workflow_dispatch:  # Consente di avviare manualmente
+
 jobs:
   run:
     runs-on: ubuntu-latest
