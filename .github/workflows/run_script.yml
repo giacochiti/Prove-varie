@@ -22,7 +22,10 @@ jobs:
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
-          git pull --rebase  # Evita errori di push rifiutato
+          git stash  # Salva temporaneamente le modifiche locali
+          git pull --rebase  # Scarica le modifiche dal repository remoto
+          git stash pop  # Ripristina le modifiche locali
           git add somma.txt
           git commit -m "Aggiornato somma.txt" || echo "Nessuna modifica da commitare"
           git push
+
