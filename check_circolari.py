@@ -41,7 +41,7 @@ def get_latest_circular():
 
 # Funzione per gestire la creazione e l'aggiornamento del file ultima.txt
 def manage_circular_file(circular_title):
-    file_path = 'Prove-varie/ultima.txt'  # Assicurati che il percorso sia relativo al tuo repository
+    file_path = 'Prove-varie'  # Assicurati che il percorso sia relativo al tuo repository
     
     try:
         # Controlla se il file esiste
