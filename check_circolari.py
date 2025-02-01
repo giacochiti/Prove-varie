@@ -42,7 +42,8 @@ def get_latest_circular():
 # Funzione per gestire la creazione e l'aggiornamento del file ultima.txt
 def manage_circular_file(circular_title):
     file_path = 'Prove-varie/ultima.txt'  # Path corretto per il file nel repository
-    print(f"Percorso del file: {file_path}")  # Debug
+    print(f"Directory corrente: {os.getcwd()}")  # Stampa la directory corrente per debug
+    print(f"Percorso del file: {file_path}")  # Stampa il percorso del file per debug
 
     try:
         # Controlla se il file esiste
@@ -83,25 +84,4 @@ def commit_and_push_changes():
         subprocess.run(['git', 'commit', '-m', 'Aggiornato ultima.txt con il titolo della nuova circolare'], check=True)
         subprocess.run(['git', 'push'], check=True)
         print("Modifiche commesse e pushate correttamente su GitHub.")
-    except subprocess.CalledProcessError as e:
-        print(f"Errore durante il commit o il push: {e}")
-
-# Main
-if __name__ == "__main__":
-    # Ottieni l'ultima circolare dal sito
-    circular_title, circular_link = get_latest_circular()
-    
-    if circular_title is None or circular_link is None:
-        print("Errore nel recuperare l'ultima circolare.")
-    else:
-        # Confronta le circolari
-        if manage_circular_file(circular_title):
-            # Crea il messaggio da inviare
-            message = f"Ultima circolare pubblicata:\nTitolo: {circular_title}\nLink: {circular_link}"
-            
-            # Invia il messaggio su Telegram
-            send_telegram_message(message)
-            # Commit e push delle modifiche
-            commit_and_push_changes()
-        else:
-            print("Nessun nuovo messaggio inviato.")
+    except subprocess.Call
