@@ -44,7 +44,8 @@ def get_latest_circular():
 
 # Funzione per gestire la creazione e l'aggiornamento del file ultima.txt
 def manage_circular_file(circular_title):
-    file_path = 'Prove-varie/ultima.txt'  # Path corretto per il file nel repository
+    # Usa il percorso assoluto per il file
+    file_path = os.path.join(os.getcwd(), 'Prove-varie', 'ultima.txt')  # Percorso assoluto del file
     print(f"Directory corrente: {os.getcwd()}")  # Stampa la directory corrente per debug
     print(f"Percorso del file: {file_path}")  # Stampa il percorso del file per debug
 
