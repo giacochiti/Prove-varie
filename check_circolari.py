@@ -48,7 +48,8 @@ def manage_circular_file(circular_title):
             # Se il file non esiste, crealo e scrivi circular_title
             with open(file_path, 'w') as file:
                 file.write(circular_title)
-            print(f"File creato. Titolo circolare salvato: {circular_title}")
+            print(f"File creato in: {os.path.abspath(file_path)}")
+            print(f"Titolo circolare salvato: {circular_title}")
         else:
             # Se il file esiste, leggi il contenuto
             with open(file_path, 'r') as file:
@@ -63,7 +64,8 @@ def manage_circular_file(circular_title):
                 # Se sono diversi, aggiorna il file con il nuovo titolo
                 with open(file_path, 'w') as file:
                     file.write(circular_title)
-                print(f"Il titolo è cambiato. File aggiornato con: {circular_title}")
+                print(f"Il titolo è cambiato. File aggiornato in: {os.path.abspath(file_path)}")
+                print(f"File aggiornato con: {circular_title}")
                 return True
     except Exception as e:
         print(f"Errore durante la gestione del file: {e}")
