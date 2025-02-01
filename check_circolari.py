@@ -12,7 +12,6 @@ url = 'https://liceoartisticopistoia.edu.it/circolari/'
 
 # Funzione per inviare un messaggio su Telegram tramite l'API
 def send_telegram_message(message):
-    print("Invio del messaggio su Telegram...")
     api_url = f"https://api.telegram.org/bot{token}/sendMessage"
     payload = {
         'chat_id': chat_id,
@@ -26,7 +25,6 @@ def send_telegram_message(message):
 
 # Funzione per ottenere l'ultima circolare
 def get_latest_circular():
-    print("Recupero dell'ultima circolare dal sito...")
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
     
@@ -39,16 +37,16 @@ def get_latest_circular():
     circular_title = latest_circular_element.find('strong', class_='ptitle').text.strip()
     circular_link = latest_circular_element.find('a')['href']
     
-    print(f"Ultima circolare trovata: {circular_title}")
     return circular_title, circular_link
 
 # Funzione per gestire la creazione e l'aggiornamento del file ultima.txt
 def manage_circular_file(circular_title):
-    # Usa il percorso assoluto per il file
-    file_path = os.path.join(os.getcwd(), 'Prove-varie', 'ultima.txt')  # Percorso assoluto del file
-    print(f"Directory corrente: {os.getcwd()}")  # Stampa la directory corrente per debug
-    print(f"Percorso del file: {file_path}")  # Stampa il percorso del file per debug
-
+    # Percorso del file
+    file_path = 'Prove-varie/ultima.txt'
+    
+    print(f"Directory corrente: {os.getcwd()}")
+    print(f"Percorso del file: {file_path}")
+    
     try:
         # Controlla se il file esiste
         if not os.path.exists(file_path):
@@ -76,16 +74,14 @@ def manage_circular_file(circular_title):
         print(f"Errore durante la gestione del file: {e}")
         return False
 
-# Funzione per eseguire il commit e il push delle modifiche al repository
+# Funzione per eseguire il commit e il push su GitHub
 def commit_and_push_changes():
     try:
-        print("Configurazione dell'identità Git...")
-        # Configura l'identità dell'utente Git (necessario per GitHub Actions)
-        subprocess.run(['git', 'config', '--global', 'user.email', 'actions@github.com'], check=True)
-        subprocess.run(['git', 'config', '--global', 'user.name', 'github-actions'], check=True)
+        # Configura l'identità dell'utente su Git
+        subprocess.run(['git', 'config', '--global', 'user.email', 'your-email@example.com'], check=True)
+        subprocess.run(['git', 'config', '--global', 'user.name', 'Your Name'], check=True)
         
-        # Aggiungi il file e esegui il commit
-        print("Eseguo il commit del file...")
+        # Esegui il commit e il push delle modifiche
         subprocess.run(['git', 'add', 'Prove-varie/ultima.txt'], check=True)
         subprocess.run(['git', 'commit', '-m', 'Aggiornato ultima.txt con il titolo della nuova circolare'], check=True)
         subprocess.run(['git', 'push'], check=True)
@@ -95,13 +91,16 @@ def commit_and_push_changes():
 
 # Main
 if __name__ == "__main__":
-    # Ottieni l'ultima circolare dal sito
     print("Inizio l'esecuzione del programma...")
+    
+    # Ottieni l'ultima circolare dal sito
     circular_title, circular_link = get_latest_circular()
     
     if circular_title is None or circular_link is None:
         print("Errore nel recuperare l'ultima circolare.")
     else:
+        print(f"Ultima circolare trovata: {circular_title}")
+        
         # Confronta le circolari
         if manage_circular_file(circular_title):
             # Crea il messaggio da inviare
@@ -109,7 +108,8 @@ if __name__ == "__main__":
             
             # Invia il messaggio su Telegram
             send_telegram_message(message)
-            # Commit e push delle modifiche
+            
+            # Esegui il commit e il push
             commit_and_push_changes()
         else:
             print("Nessun nuovo messaggio inviato.")
