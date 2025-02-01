@@ -40,13 +40,17 @@ def get_latest_circular():
 
 # Funzione per gestire la creazione e l'aggiornamento del file ultima.txt
 def manage_circular_file(circular_title):
-    # Usa un percorso assoluto per essere sicuri che il file venga creato nel posto giusto
+    # Usa un percorso assoluto ma corretto per essere sicuri che il file venga creato nel posto giusto
     file_path = os.path.join(os.getcwd(), 'Prove-varie', 'ultima.txt')
     
     print(f"Directory corrente: {os.getcwd()}")
     print(f"Percorso del file: {file_path}")
     
     try:
+        # Se la cartella non esiste, creala
+        if not os.path.exists(os.path.dirname(file_path)):
+            os.makedirs(os.path.dirname(file_path))
+
         # Verifica se il file esiste
         if os.path.exists(file_path):
             print(f"Il file {file_path} esiste già.")
