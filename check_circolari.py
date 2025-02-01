@@ -1,6 +1,7 @@
 import os
 import requests
 from bs4 import BeautifulSoup
+import subprocess
 
 # Configurazione Telegram
 chat_id = '1885923992'  # Il tuo ID
@@ -40,25 +41,23 @@ def get_latest_circular():
 
 # Funzione per gestire la creazione e l'aggiornamento del file ultima.txt
 def manage_circular_file(circular_title):
-    # Usa un percorso assoluto ma corretto per essere sicuri che il file venga creato nel posto giusto
-    file_path = os.path.join(os.getcwd(), 'Prove-varie', 'ultima.txt')
-    
-    print(f"Directory corrente: {os.getcwd()}")
-    print(f"Percorso del file: {file_path}")
+    file_path = 'Prove-varie/ultima.txt'  # Percorso corretto del file nel repository
     
     try:
-        # Se la cartella non esiste, creala
-        if not os.path.exists(os.path.dirname(file_path)):
-            os.makedirs(os.path.dirname(file_path))
-
-        # Verifica se il file esiste
-        if os.path.exists(file_path):
-            print(f"Il file {file_path} esiste già.")
+        # Controlla se il file esiste
+        if not os.path.exists(file_path):
+            # Se il file non esiste, crealo e scrivi circular_title
+            with open(file_path, 'w') as file:
+                file.write(circular_title)
+            print(f"File creato. Titolo circolare salvato: {circular_title}")
+        else:
+            # Se il file esiste, leggi il contenuto
             with open(file_path, 'r') as file:
                 saved_title = file.read().strip()
             
             # Confronta il titolo salvato con circular_title
             if saved_title == circular_title:
+                # Se sono uguali, interrompe l'esecuzione
                 print("Il titolo è uguale all'ultimo salvato. Programma terminato.")
                 return False
             else:
@@ -67,16 +66,20 @@ def manage_circular_file(circular_title):
                     file.write(circular_title)
                 print(f"Il titolo è cambiato. File aggiornato con: {circular_title}")
                 return True
-        else:
-            print(f"Il file {file_path} non esiste.")
-            # Se il file non esiste, crealo e scrivi circular_title
-            with open(file_path, 'w') as file:
-                file.write(circular_title)
-            print(f"File creato. Titolo circolare salvato: {circular_title}")
-            return True
     except Exception as e:
         print(f"Errore durante la gestione del file: {e}")
         return False
+
+# Funzione per eseguire il commit e il push delle modifiche su GitHub
+def commit_and_push_changes():
+    try:
+        # Esegui il commit e il push delle modifiche al repository
+        subprocess.run(['git', 'add', 'Prove-varie/ultima.txt'], check=True)
+        subprocess.run(['git', 'commit', '-m', 'Aggiornato ultima.txt con il titolo della nuova circolare'], check=True)
+        subprocess.run(['git', 'push'], check=True)
+        print("Modifiche commesse e pushate correttamente su GitHub.")
+    except subprocess.CalledProcessError as e:
+        print(f"Errore durante il commit o il push: {e}")
 
 # Main
 if __name__ == "__main__":
@@ -93,6 +96,8 @@ if __name__ == "__main__":
             
             # Invia il messaggio su Telegram
             send_telegram_message(message)
+            
+            # Esegui il commit e il push delle modifiche su GitHub
+            commit_and_push_changes()
         else:
             print("Nessun nuovo messaggio inviato.")
-
