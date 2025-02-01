@@ -1,4 +1,5 @@
-import os
+
+  import os
 import requests
 from bs4 import BeautifulSoup
 import subprocess
@@ -41,7 +42,8 @@ def get_latest_circular():
 
 # Funzione per gestire la creazione e l'aggiornamento del file ultima.txt
 def manage_circular_file(circular_title):
-    file_path = 'Prove-varie/ultima.txt'  # Percorso corretto del file nel repository
+    # Usa il percorso relativo alla directory corrente di esecuzione
+    file_path = 'ultima.txt'  # percorso relativo al file nel repository
     
     try:
         # Controlla se il file esiste
@@ -73,9 +75,11 @@ def manage_circular_file(circular_title):
 # Funzione per eseguire il commit e il push delle modifiche su GitHub
 def commit_and_push_changes():
     try:
-        # Esegui il commit e il push delle modifiche al repository
-        subprocess.run(['git', 'add', 'Prove-varie/ultima.txt'], check=True)
+        # Aggiungi il file al controllo di versione
+        subprocess.run(['git', 'add', 'ultima.txt'], check=True)
+        # Esegui il commit delle modifiche
         subprocess.run(['git', 'commit', '-m', 'Aggiornato ultima.txt con il titolo della nuova circolare'], check=True)
+        # Esegui il push su GitHub
         subprocess.run(['git', 'push'], check=True)
         print("Modifiche commesse e pushate correttamente su GitHub.")
     except subprocess.CalledProcessError as e:
