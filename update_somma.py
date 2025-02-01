@@ -1,6 +1,6 @@
 import os
 
-def legi_numero(file_path):
+def leggi_numero(file_path):
     if os.path.exists(file_path):
         with open(file_path, 'r') as file:
             contenuto = file.read().strip()
