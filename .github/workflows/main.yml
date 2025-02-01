@@ -1,0 +1,20 @@
+name: Esegui check_circolari ogni 5 minuti
+on:
+  schedule:
+    - cron: "*/5 * * * *"  # Esegue il workflow ogni 5 minuti
+  workflow_dispatch:  # Permette di eseguire manualmente il workflow
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt || echo "No dependencies to install"
+      - name: Esegui script check_circolari.py
+        run: python check_circolari.py
