@@ -1,6 +1,7 @@
 import os
 import requests
 from bs4 import BeautifulSoup
+import subprocess
 
 # Configurazione Telegram
 chat_id = '1885923992'  # Il tuo ID
@@ -40,7 +41,7 @@ def get_latest_circular():
 
 # Funzione per gestire la creazione e l'aggiornamento del file ultima.txt
 def manage_circular_file(circular_title):
-    file_path = 'ultima.txt'
+    file_path = 'Prove-varie/ultima.txt'  # Assicurati che il percorso sia relativo al tuo repository
     
     try:
         # Controlla se il file esiste
@@ -71,6 +72,17 @@ def manage_circular_file(circular_title):
         print(f"Errore durante la gestione del file: {e}")
         return False
 
+# Funzione per fare il commit e il push del file nel repository GitHub
+def commit_and_push_changes():
+    try:
+        # Esegui il commit e il push delle modifiche al repository
+        subprocess.run(['git', 'add', 'Prove-varie/ultima.txt'], check=True)
+        subprocess.run(['git', 'commit', '-m', 'Aggiornato ultima.txt con il titolo della nuova circolare'], check=True)
+        subprocess.run(['git', 'push'], check=True)
+        print("Modifiche commesse e pushate correttamente su GitHub.")
+    except subprocess.CalledProcessError as e:
+        print(f"Errore durante il commit o il push: {e}")
+
 # Main
 if __name__ == "__main__":
     # Ottieni l'ultima circolare dal sito
@@ -86,5 +98,8 @@ if __name__ == "__main__":
             
             # Invia il messaggio su Telegram
             send_telegram_message(message)
+            
+            # Fai il commit e il push del file nel repository GitHub
+            commit_and_push_changes()
         else:
             print("Nessun nuovo messaggio inviato.")
