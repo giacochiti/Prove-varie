@@ -1,4 +1,3 @@
-
 import os
 import requests
 from bs4 import BeautifulSoup
@@ -42,9 +41,9 @@ def get_latest_circular():
 
 # Funzione per gestire la creazione e l'aggiornamento del file ultima.txt
 def manage_circular_file(circular_title):
-    # Usa il percorso relativo alla directory corrente di esecuzione
-    file_path = 'ultima.txt'  # percorso relativo al file nel repository
-    
+    file_path = 'Prove-varie/ultima.txt'  # Path corretto per il file nel repository
+    print(f"Percorso del file: {file_path}")  # Debug
+
     try:
         # Controlla se il file esiste
         if not os.path.exists(file_path):
@@ -72,14 +71,16 @@ def manage_circular_file(circular_title):
         print(f"Errore durante la gestione del file: {e}")
         return False
 
-# Funzione per eseguire il commit e il push delle modifiche su GitHub
+# Funzione per eseguire il commit e il push delle modifiche al repository
 def commit_and_push_changes():
     try:
-        # Aggiungi il file al controllo di versione
-        subprocess.run(['git', 'add', 'ultima.txt'], check=True)
-        # Esegui il commit delle modifiche
+        # Configura l'identità dell'utente Git (necessario per GitHub Actions)
+        subprocess.run(['git', 'config', '--global', 'user.email', 'actions@github.com'], check=True)
+        subprocess.run(['git', 'config', '--global', 'user.name', 'github-actions'], check=True)
+        
+        # Aggiungi il file e esegui il commit
+        subprocess.run(['git', 'add', 'Prove-varie/ultima.txt'], check=True)
         subprocess.run(['git', 'commit', '-m', 'Aggiornato ultima.txt con il titolo della nuova circolare'], check=True)
-        # Esegui il push su GitHub
         subprocess.run(['git', 'push'], check=True)
         print("Modifiche commesse e pushate correttamente su GitHub.")
     except subprocess.CalledProcessError as e:
@@ -100,8 +101,7 @@ if __name__ == "__main__":
             
             # Invia il messaggio su Telegram
             send_telegram_message(message)
-            
-            # Esegui il commit e il push delle modifiche su GitHub
+            # Commit e push delle modifiche
             commit_and_push_changes()
         else:
             print("Nessun nuovo messaggio inviato.")
